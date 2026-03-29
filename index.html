@@ -1,35 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Syeda Kazmi - Home</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Learn About Cat Facts</title>
 </head>
 <body>
+    <h1>Learn About Cat Facts</h1>
 
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="index.html">Home</a>
-      </div>
-      <ul class="nav navbar-nav">
-     <li><a href="lab3.html">Lab 3</a></li>
-      </ul>
-    </div>
-  </nav>
+    <button onclick="loadData()">Click Me For Cat Facts</button>
 
+    <img src="funfacts.jpg" alt="Cat Picture" id="catPicture" width="250">
 
-  <div class="container text-center">
-    <h1>Welcome to My Website Portfolio</h1>
-    <p><p>This website contains my Lab 3 “About Me” page for CSC 226</p></p>
+    <table>
+        <thead>
+            <tr>
+                <th>factId</th>
+                <th>fact</th>
+            </tr>
+        </thead>
+        <tbody id="factsOutput">
+        </tbody>
+    </table>
 
+    <script>
+        async function loadData() {
+            const url = "https://brianobruno.github.io/cats.json";
 
-    <h3>Labs:</h3>
-    <ul>
-      <li><a href="lab3.html">Lab 3 - About Me</a></li>
-    </ul>
-  </div>
+            const response = await fetch(url);
+            const data = await response.json();
 
+            data.facts.sort(function(a, b) {
+                return a.factId - b.factId;
+            });
+            
+            const tableBody = document.getElementById("factsOutput");
+            tableBody.innerHTML = ""; 
+            
+            data.facts.forEach(function(item) {
+                const row = document.createElement("tr");
+
+                const idCell = document.createElement("td");
+                idCell.textContent = item.factId;  
+
+                const factCell = document.createElement("td");
+                factCell.textContent = item.text;  
+
+                row.appendChild(idCell);
+                row.appendChild(factCell);
+
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById("catPicture").src = data.catPhoto;
+        }
+    </script>
 </body>
 </html>
